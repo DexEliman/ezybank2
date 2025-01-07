@@ -9,23 +9,21 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
-
 class CompteBancaireController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $compte = new CompteBancaire();
-        $compte->numero_compte = $this->generateUniqueNumeroCompte();
-        $compte->idUser   = Auth::user()->idCompte;
-        $compte->nom_bancaire = $request->nom_bancaire;
-        $compte->save();
-        $compte->idUser  = Auth::user()->idCompte;
-        return view('comptes.index', compact('comptes'));
+        $comptes = CompteBancaire::where("idUser", Auth::user()->idCompte)->get();
+        return view('Compte.index', compact('comptes'));
     }
 
     public function create()
     {
-        return view('comptes.create');
+        $compteCourant = CompteBancaire::where("idUser", Auth::user()->idCompte)->where("typeCompte", "Courant")->first();
+        if ($compteCourant) {
+            return redirect()->route('comptes.index')->with('error', 'Vous avez déjà un compte courant.');
+        }
+        return view('Compte.create');
     }
 
     public function store(Request $request)
@@ -33,14 +31,19 @@ class CompteBancaireController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Vous devez être connecté pour créer un compte.');
         }
+        $compteCourant = CompteBancaire::where("idUser", Auth::user()->idCompte)->where("typeCompte", "Courant")->first();
+        if ($compteCourant) {
+            return redirect()->route('comptes.index')->with('error', 'Vous avez déjà un compte courant.');
+        }
         $request->validate([
             'nom_bancaire' => 'required|string|max:255',
         ]);
 
         $compte = new CompteBancaire();
         $compte->numero_compte = $this->generateUniqueNumeroCompte();
-        $comptes = CompteBancaire::where('idUser ', Auth::user()->idCompte)->get();
+        $compte->idUser  = Auth::user()->idCompte;
         $compte->nom_bancaire = $request->nom_bancaire;
+        $compte->typeCompte = "Courant";
         $compte->save();
 
         return redirect()->route('comptes.index')->with('success', 'Compte créé avec succès.');

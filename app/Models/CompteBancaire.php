@@ -8,6 +8,8 @@ class CompteBancaire extends Model
 {
     use HasFactory;
 
+    public $table = "compte_bancaire";
+
     // Les champs remplissables (mass assignable)
     protected $fillable = [
         'numero_compte',

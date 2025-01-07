@@ -7,8 +7,8 @@
     </h3>
     <h3>Mes Comptes</h3>
     <ul>
-        <li><a href="  ">Mon Compte Courant</a></li>
-        <li><a href="">Mes Compte Epargne</a></li>
+        <li><a href="{{ route('comptes.index') }}">Mon Compte Courant</a></li>
+        <li><a href="{{ route('beta') }}">Mes Compte Epargne</a></li>
     </ul>
 
 

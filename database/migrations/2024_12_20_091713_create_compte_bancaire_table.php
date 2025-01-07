@@ -17,7 +17,8 @@ return new class extends Migration
             $table->integer('idUser');
             $table->string('nom_bancaire');
             $table->integer('budget')->default(0);
-            $table->string('statut')->default('ouvert');;
+            $table->string('statut')->default('ouvert');
+            $table->string('typeCompte')->default('Courant');
             $table->timestamps();
         });
     }

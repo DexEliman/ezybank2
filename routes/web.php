@@ -35,6 +35,9 @@ Route::get('/Assurance/info-assurance', function () {
 Route::get('/login', function () {
     return view ('Auth/connexion');
 })->name('connexion');
+Route::get('/login2', function () {
+    return redirect()->to(route('connexion'));
+})->name('login');
 Route::post('/login', [ConnexionController::class, 'login'])->name('login.submit');
 //  register
 Route::get('/register', function () {
