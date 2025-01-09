@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('compte_bancaire', function (Blueprint $table) {
             $table->id();
             $table->string('numero_compte')->unique();
-            $table->integer('idUser');
+            $table->unsignedInteger('idUser');
             $table->string('iban');
             $table->integer('budget')->default(0);
             $table->string('statut')->default('ouvert');

@@ -13,10 +13,12 @@ class CompteBancaire extends Model
     // Les champs remplissables (mass assignable)
     protected $fillable = [
         'numero_compte',
-        'idUser  ',
-        'nom_bancaire',
+        'idUser',
+        'iban',
         'budget',
         'statut',
+        'typeCompte',
+
     ];
 
     // Les valeurs par défaut pour certains champs
@@ -28,6 +30,6 @@ class CompteBancaire extends Model
     // Relation avec l'utilisateur (si vous avez un modèle User)
     public function user()
     {
-        return $this->belongsTo(User::class, 'idUser  ');
+        return $this->belongsTo(User::class, 'idUser');
     }
 }

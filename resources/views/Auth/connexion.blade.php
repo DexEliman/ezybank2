@@ -125,7 +125,7 @@
         <input type="password" name="password" placeholder="Mot de passe" required>
         <button type="submit">Se Connecter</button>
 
-        <p>Vous avew pas de compte ? <a href="{{ route('Plan') }}">S'inscrire</a></p>
+        <p>Vous avez pas de compte ? <a href="{{ route('Plan') }}">S'inscrire</a></p>
 
     </form>
 </body>
