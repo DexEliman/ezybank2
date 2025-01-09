@@ -11,14 +11,13 @@
 </head>
 
 <body>
-    <h1>Créer un nouveau compte</h1>
-    <form action="{{ route('comptes.store') }}" method="POST">
-        @csrf
-        <label for="nom_bancaire">Nom du compte :</label>
-        <input type="text" name="nom_bancaire" id="nom_bancaire" required>
-        <button type="submit">Créer</button>
-    </form>
-    <a href="{{ route('comptes.index') }}">Retour à la liste des comptes</a>
+    <div class="container">
+        <h1>Créer un nouveau compte bancaire</h1>
+        <form action="{{ route('compte_bancaire.store') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn btn-primary">Créer un compte bancaire</button>
+        </form>
+    </div>
 </body>
 
 </html>

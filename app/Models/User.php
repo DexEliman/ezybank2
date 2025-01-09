@@ -15,6 +15,10 @@ class User extends Authenticatable
     protected $table = 'user';
 
     protected $primaryKey = 'idClient';
+    public function id_Client()
+    {
+        return $this->id;
+    }
 
     protected $fillable = [
         'Nom', 'adresse', 'Localisation', 'tel', 'Email', 'Password'

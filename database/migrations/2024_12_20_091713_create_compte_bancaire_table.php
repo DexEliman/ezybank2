@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('numero_compte')->unique();
             $table->integer('idUser');
-            $table->string('nom_bancaire');
+            $table->string('iban');
             $table->integer('budget')->default(0);
             $table->string('statut')->default('ouvert');
             $table->string('typeCompte')->default('Courant');

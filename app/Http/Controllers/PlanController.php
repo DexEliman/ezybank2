@@ -15,6 +15,6 @@ class PlanController extends Controller
         // Page Premium
         public function premium()
         {
-            //return view('plan.premium');
+            return view('beta');
         }
 }

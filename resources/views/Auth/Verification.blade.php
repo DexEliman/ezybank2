@@ -67,6 +67,7 @@
 
 <body>
     <h1>Portail de Vérification</h1>
+    <h3>Sasissez le code a 6 chiffre envoyé à votre adresse email</h3>
     <form id="verificationForm" action="{{ route('verify.code') }}" method="POST">
         @csrf
         <div class="code-container">

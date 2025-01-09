@@ -69,3 +69,16 @@ Route::get('/Admin/Dashboard', function () {
 })->name('AdminHome');
 
 Route::resource('localisations', LocalisationController::class);
+// -Fonctions Admin
+// --Compte Bancaire
+Route::delete('/compte-bancaire/{id}', [CompteBancaireController::class, 'destroy'])->name('compte_bancaire.destroy');
+
+//Fonctions:
+//Compte Bancaire
+Route::get('/compte-bancaire', [CompteBancaireController::class, 'index'])->name('compte_bancaire.index');
+Route::get('/compte-bancaire/create', [CompteBancaireController::class, 'create'])->name('compte_bancaire.create');
+Route::post('/compte-bancaire', [CompteBancaireController::class, 'store'])->name('compte_bancaire.store');
+Route::get('/compte-bancaire/{id}', [CompteBancaireController::class, 'show'])->name('compte_bancaire.show');
+Route::get('/compte _bancaire/{id}/edit', [CompteBancaireController::class, 'edit'])->name('compte_bancaire.edit');
+Route::put('/compte-bancaire/{id}', [CompteBancaireController::class, 'update'])->name('compte_bancaire.update');
+

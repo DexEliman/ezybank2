@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('card', function (Blueprint $table) {
             $table->id();
-            $table->integer('idUser');
+            $table->integer('idUser')->constrained('user')->onDelete('cascade');
             $table->string('numCard');
             $table->string('typeCard');
             $table->integer('cvc');

@@ -17,13 +17,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 150vh;
             margin: 0;
         }
 
         .container {
             text-align: center;
-            max-width: 800px;
+            max-width: 1000px;
+            max-height: 120vh;
             padding: 30px;
             background-color: #fff;
             border-radius: 10px;
@@ -87,6 +88,7 @@
         .btn-primary {
             background-color: #007bff;
             border: none;
+            margin-top: 0.5rem;
         }
 
         .btn-primary:hover {
@@ -96,6 +98,7 @@
         .btn-success {
             background-color: #28a745;
             border: none;
+            margin-top: 0.5rem;
         }
 
         .btn-success:hover {
@@ -160,9 +163,15 @@
                 <i class="fas fa-user"></i> 
                 => Stay Basic 
             </a>
-            <a href="#" class="btn btn-success">
+            <a href="{{ route('beta') }}" class="btn btn-success">
                 <i class="fas fa-star"></i> 
                 => Go Premium
+            </a>
+        </div>
+        <div>
+            <a href="{{ route('login') }}" class="btn btn-primary">
+                <i class="fas fa-user"></i> 
+                J'ai Deja un Compte
             </a>
         </div>
     </div>
