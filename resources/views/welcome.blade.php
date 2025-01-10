@@ -62,7 +62,6 @@
     <div class="buttons">
         <a href="{{ route('launch') }}">Launch</a>
         <a href="{{ route('about') }}">À propos de Nous</a>
-        <a href="#">Compte Deja Créé</a>
     </div>
 </body>
 

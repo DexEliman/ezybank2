@@ -7,6 +7,10 @@ use App\Http\Controllers\LocalisationController;
 use App\Http\Controllers\InscriptionController;
 use App\Http\Controllers\ConnexionController;
 use App\Http\Controllers\CompteBancaireController;
+use App\Http\Controllers\TransactionController;
+
+
+
 
 //DEBUT
 Route::get('/', function () {
@@ -81,4 +85,17 @@ Route::post('/compte-bancaire', [CompteBancaireController::class, 'store'])->nam
 Route::get('/compte-bancaire/{id}', [CompteBancaireController::class, 'show'])->name('compte_bancaire.show');
 Route::get('/compte _bancaire/{id}/edit', [CompteBancaireController::class, 'edit'])->name('compte_bancaire.edit');
 Route::put('/compte-bancaire/{id}', [CompteBancaireController::class, 'update'])->name('compte_bancaire.update');
-
+//Transaction
+// Route pour afficher la page d'ajout d'argent
+Route::middleware('auth')->group(function () {
+    // Routes protégées
+    Route::get('/transaction/addmoney', [TransactionController::class, 'addMoney'])->name('transaction.addMoney');
+    Route::post('/transaction/addMoney', [TransactionController::class, 'addMoneyPost'])->name('transaction.addMoneyPost');
+    Route::get('/transaction/historique', [TransactionController::class, 'historique'])->name('transaction.historique'); 
+    Route::get('/virement', [TransactionController::class, 'showVirementForm'])->name('transaction.showVirementForm');
+    Route::post('/virement/verify-iban', [TransactionController::class, 'verifyIban'])->name('transaction.verifyIban');
+    Route::get('/virement/verify-password', [TransactionController::class, 'showPasswordVerification'])->name('transaction.verifyPassword');
+    Route::post('/virement/verify-password', [TransactionController::class, 'showPasswordVerification'])->name('transaction.verifyPassword');
+    Route::post('/virement/process', [TransactionController::class, 'processVirement'])->name('transaction.processVirement');
+    Route::get('/virement/success', [TransactionController::class, 'showSuccessPage'])->name('transaction.success');
+});// Afficher la page de vérification du mot de passe

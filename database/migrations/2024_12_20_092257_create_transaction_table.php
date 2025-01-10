@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('transaction', function (Blueprint $table) {
             $table->id();
-            $table->integer('idNumCompteDeb');
-            $table->integer('idNumCompteCre');
+            $table->string('CompteDeb');
+            $table->string('CompteCre');
             $table->integer('montant');
             $table->string('typeTransaction');
             $table->timestamps();

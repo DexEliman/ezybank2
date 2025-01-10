@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Comptes</title>
+    <title>Mes Transactions</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -103,69 +103,38 @@
 
 <body>
     <div class="container">
-        <h1 class="my-4">Mes Comptes Bancaires</h1>
-
-        <!-- Bouton pour créer un nouveau compte bancaire -->
-        <a href="{{ route('compte_bancaire.create') }}" class="btn btn-primary mb-4">
-            <i class="fas fa-plus"></i> Créer un nouveau compte bancaire
-        </a>
-        @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
-
-        @if (session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-        @endif
-
-        <!-- Tableau pour afficher les comptes bancaires -->
+        <h1>Historique des Transactions</h1>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Numéro de Compte</th>
-                    <th>IBAN</th>
-                    <th>Budget</th>
-                    <th>Statut</th>
-                    <th>Type de Compte</th>
-                    <th>Actions</th>
+                    <th>Compte Débiteur</th>
+                    <th>Compte Créditeur</th>
+                    <th>Montant</th>
+                    <th>Type de Transaction</th>
+                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($comptes as $compte)
+                @foreach($transactions as $transaction)
                 <tr>
-                    <td>{{ $compte->numero_compte }}</td>
-                    <td>{{ $compte->iban }}</td>
-                    <td>{{ $compte->budget }} €</td>
-                    <td>{{ $compte->statut }}</td>
-                    <td>{{ $compte->typeCompte }}</td>
-                    <td>
-                        <a href="{{ route('compte_bancaire.show', $compte->id) }}" class="btn btn-info btn-sm">
-                            Voir
-                        </a>
-                        <form action="{{ route('compte_bancaire.destroy', $compte->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce compte ?')">
-                                Supprimer
-                            </button>
-                        </form>
-                    </td>
+                    <td>{{ $transaction->CompteDeb }}</td>
+                    <td>{{ $transaction->CompteCre }}</td>
+                    <td>{{ $transaction->montant }}</td>
+                    <td>{{ $transaction->typeTransaction }}</td>
+                    <td>{{ $transaction->created_at }}</td>
                 </tr>
                 @endforeach
-                @if (count($comptes) == 0)
+                @if (count($transactions) == 0)
                 <tr>
-                    <td colspan="6" class="text-center">Aucun compte bancaire trouvé.</td>
+                    <td colspan="5" class="text-center">Aucun compte bancaire trouvé.</td>
                 </tr>
                 @endif
             </tbody>
         </table>
     </div>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
+
 @endsection

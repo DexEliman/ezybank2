@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('numero_compte')->unique();
             $table->unsignedInteger('idUser');
             $table->string('iban');
-            $table->integer('budget')->default(0);
+            $table->decimal('budget', 10, 2) ->default(0);
             $table->string('statut')->default('ouvert');
             $table->string('typeCompte')->default('Courant');
             $table->timestamps();

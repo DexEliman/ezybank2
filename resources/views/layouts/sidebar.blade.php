@@ -1,9 +1,10 @@
 <div class="sidebar">
     <h3>
         <a href="{{ route('Home') }}">HOME</a>
-        <a href="">Mes Transaction</a>
+        <a href="{{ route('transaction.historique') }}">Mes Transaction</a>
         <a href="{{ route('info-Assurance') }}">Mes Assurances</a>
         <a href="{{ route('beta') }}">Mes Carte</a>
+        <a href="{{ route('transaction.showVirementForm') }}">Virement</a>
     </h3>
     <h3>Mes Comptes</h3>
     <ul>
