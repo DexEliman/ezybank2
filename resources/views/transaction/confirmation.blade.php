@@ -7,9 +7,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verification</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Confirmation</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Styles CSS personnalisés -->
@@ -59,20 +59,17 @@
             margin-top: 30px;
         }
     </style>
-
 </head>
 
 <body>
     <div class="container">
-        <h1>Vérification du mot de passe</h1>
-        <form action="{{ route('transaction.verifyPassword') }}" method="POST">
+        <h1>Confirmation du virement</h1>
+        <p>Vous êtes sur le point d'effectuer un virement de {{ $virementData['montant'] }} à l'IBAN {{ $virementData['iban'] }}.</p>
+        <form action="{{ route('transaction.executeVirement') }}" method="POST">
             @csrf
-            <div class="form-group">
-                <label for="password">Mot de passe :</label>
-                <input type="password" name="password" id="password"  required>
-            </div>
-            <button type="submit" class="btn btn-primary">Confirmer le virement</button>
+            <button type="submit" class="btn btn-success">Confirmer le virement</button>
         </form>
+        <a href="{{ route('transaction.showVirementForm') }}" class="btn btn-danger">Annuler</a>
     </div>
 </body>
 

@@ -34,6 +34,6 @@ class User extends Authenticatable
     }
     public function compteBancaire()
     {
-        return $this->hasOne(CompteBancaire::class, 'idUser  ');
+        return $this->hasOne(CompteBancaire::class, 'idUser');
     }
 }

@@ -6,6 +6,11 @@ use App\Models\CompteBancaire;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
+
 
 class TransactionController extends Controller
 {
@@ -64,7 +69,7 @@ class TransactionController extends Controller
     {
         return view('transaction.virement');
     }
-    public function verifyIban(Request $request)
+    public function processVirement(Request $request)
     {
         // Valider les données du formulaire
         $request->validate([
@@ -76,83 +81,85 @@ class TransactionController extends Controller
         $iban = $request->iban;
         $montant = $request->montant;
 
-        // Vérifier si l'IBAN correspond à un compte utilisateur
+        // Vérifier si l'IBAN est interne ou externe
         $compteDestinataire = CompteBancaire::where('iban', $iban)->first();
 
-        // Préparer les données à afficher
-        $destinataire = [
-            'iban' => $iban,
-            'email' => $compteDestinataire ? $compteDestinataire->user->Email : null,
-        ];
-
-        // Stocker les données dans la session pour les utiliser plus tard
+        // Préparer les données pour la vérification du mot de passe
         session(['virement_data' => [
             'iban' => $iban,
             'montant' => $montant,
-            'destinataire' => $destinataire,
+            'compte_destinataire' => $compteDestinataire,
         ]]);
 
         // Rediriger vers la page de vérification du mot de passe
-        return redirect()->route('transaction.verifyPassword');
+        return redirect()->route('transaction.showVerifyPassword');
     }
-    public function showPasswordVerification()
+    public function showVerifyPassword()
     {
         return view('transaction.verify_password');
     }
-    public function processVirement(Request $request)
+
+    public function verifyPassword(Request $request)
     {
         // Valider le mot de passe
         $request->validate([
             'password' => 'required|string',
         ]);
 
-        // Vérifier si le mot de passe est correct
-        if (Auth::attempt(['Email' => Auth::user()->Email, 'password' => $request->password])) {
-            // Récupérer les données de virement de la session
-            $virementData = session('virement_data');
+        // Vérifier le mot de passe de l'utilisateur
+        if (Hash::check($request->password, Auth::user()->Password)) {
+            // Si le mot de passe est correct, rediriger vers la page de confirmation
+            return redirect()->route('transaction.confirmation');
+        } else {
+            // Si le mot de passe est incorrect, retourner à la page de vérification avec un message d'erreur
+            return back()->withErrors(['password' => 'Mot de passe incorrect.']);
+        }
+    }
+    public function showConfirmation()
+    {
+        $virementData = session('virement_data');
+        return view('transaction.confirmation', compact('virementData'));
+    }
+    public function executeVirement()
+    {
+        $virementData = session('virement_data');
 
-            // Vérifier si les données de virement existent
-            if (!$virementData) {
-                return redirect()->back()->withErrors(['error' => 'Données de virement introuvables.']);
-            }
+        // Récupérer le compte émetteur (compte de l'utilisateur connecté)
+        $compteEmetteur = CompteBancaire::where('idUser', Auth::id())->first();
 
-            // Récupérer le compte émetteur (compte de l'utilisateur connecté)
-            $compteEmetteur = Auth::user()->compteBancaire;
+        // Récupérer le compte destinataire
+        $compteDestinataire = CompteBancaire::where('iban', $virementData['iban'])->first();
 
-            // Vérifier si le compte émetteur a suffisamment de solde
-            if ($compteEmetteur->solde < $virementData['montant']) {
-                return redirect()->back()->withErrors(['error' => 'Solde insuffisant pour effectuer le virement.']);
-            }
-
-            // Récupérer le compte destinataire
-            $compteDestinataire = CompteBancaire::where('iban', $virementData['iban'])->first();
-
-            // Effectuer le virement
-            if ($compteDestinataire) {
-                // Virement interne
-                $compteEmetteur->solde -= $virementData['montant'];
-                $compteDestinataire->solde += $virementData['montant'];
-            } else {
-                // Virement externe
-                $compteEmetteur->solde -= $virementData['montant'];
-                // Logique pour gérer le virement externe (par exemple, enregistrer dans une table de virements externes)
-            }
-
-            // Sauvegarder les modifications
-            $compteEmetteur->save();
-            if ($compteDestinataire) {
-                $compteDestinataire->save();
-            }
-
-            // Effacer les données de virement de la session
-            session()->forget('virement_data');
-
-            // Rediriger avec un message de succès
-            return redirect()->route('transaction.success')->with('success', 'Virement effectué avec succès.');
+        // Effectuer le virement
+        if ($compteDestinataire) {
+            // Virement interne
+            $compteEmetteur->budget -= $virementData['montant'];
+            $compteDestinataire->budget += $virementData['montant'];
+        } else {
+            // Virement externe
+            $compteEmetteur->budget -= $virementData['montant'];
+            // Logique pour gérer le virement externe 
         }
 
-        // Rediriger avec un message d'erreur si le mot de passe est incorrect
-        return redirect()->back()->withErrors(['password' => 'Mot de passe incorrect.']);
+        // Sauvegarder les modifications
+        $compteEmetteur->save();
+        if ($compteDestinataire) {
+            $compteDestinataire->save();
+        }
+
+        // Enregistrer la transaction
+        $transaction = new Transaction();
+        $transaction->CompteDeb = Auth::user()->Email; // Email de l'utilisateur débiteur
+        $transaction->CompteCre = $compteDestinataire ? $compteDestinataire->user->Email : 'externe'; // Email de l'utilisateur créditeur ou 'externe'
+        $transaction->montant = $virementData['montant'];
+        $transaction->typeTransaction = 'virement';
+        $transaction->save();
+
+        // Effacer les données de virement de la session
+        session()->forget('virement_data');
+
+        // Rediriger vers la page de succès
+        return redirect()->route('transaction.success');
     }
     public function showSuccessPage()
     {

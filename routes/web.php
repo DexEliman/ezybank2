@@ -86,16 +86,31 @@ Route::get('/compte-bancaire/{id}', [CompteBancaireController::class, 'show'])->
 Route::get('/compte _bancaire/{id}/edit', [CompteBancaireController::class, 'edit'])->name('compte_bancaire.edit');
 Route::put('/compte-bancaire/{id}', [CompteBancaireController::class, 'update'])->name('compte_bancaire.update');
 //Transaction
-// Route pour afficher la page d'ajout d'argent
 Route::middleware('auth')->group(function () {
-    // Routes protégées
-    Route::get('/transaction/addmoney', [TransactionController::class, 'addMoney'])->name('transaction.addMoney');
-    Route::post('/transaction/addMoney', [TransactionController::class, 'addMoneyPost'])->name('transaction.addMoneyPost');
-    Route::get('/transaction/historique', [TransactionController::class, 'historique'])->name('transaction.historique'); 
-    Route::get('/virement', [TransactionController::class, 'showVirementForm'])->name('transaction.showVirementForm');
-    Route::post('/virement/verify-iban', [TransactionController::class, 'verifyIban'])->name('transaction.verifyIban');
-    Route::get('/virement/verify-password', [TransactionController::class, 'showPasswordVerification'])->name('transaction.verifyPassword');
-    Route::post('/virement/verify-password', [TransactionController::class, 'showPasswordVerification'])->name('transaction.verifyPassword');
-    Route::post('/virement/process', [TransactionController::class, 'processVirement'])->name('transaction.processVirement');
-    Route::get('/virement/success', [TransactionController::class, 'showSuccessPage'])->name('transaction.success');
-});// Afficher la page de vérification du mot de passe
+    //AJout
+    Route::get('/transaction/addmoney', [TransactionController::class, 'addMoney'])
+    ->name('transaction.addMoney');
+    Route::post('/transaction/addMoney', [TransactionController::class, 'addMoneyPost'])
+    ->name('transaction.addMoneyPost');
+    // Transaction
+    Route::get('/transaction/historique', [TransactionController::class, 'historique'])
+    ->name('transaction.historique'); 
+    //Virement
+    Route::get('/virement', [TransactionController::class, 'showVirementForm'])
+    ->name('transaction.showVirementForm');
+    Route::post('/virement/process', [TransactionController::class, 'processVirement'])
+    ->name('transaction.processVirement');
+    Route::post('/virement/execute', [TransactionController::class, 'executeVirement'])
+         ->name('transaction.executeVirement');
+    //confirmation
+    Route::get('/virement/Verification', [TransactionController::class, 'showVerifyPassword'])
+    ->name('transaction.showVerifyPassword');
+    Route::post('/virement/verify-password', [TransactionController::class, 'verifyPassword'])
+    ->name('transaction.verifyPassword');
+    Route::get('/virement/confirmation', [TransactionController::class, 'showConfirmation'])
+         ->name('transaction.confirmation');
+    Route::get('/virement/success', [TransactionController::class, 'showSuccessPage'])
+    ->name('transaction.success');
+
+    
+});
