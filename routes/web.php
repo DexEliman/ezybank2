@@ -37,7 +37,9 @@ Route::get('/Beta', function () {
 Route::get('/Assurance/info-assurance', function () {
     return view('/Assurance/info'); 
 })->name('info-Assurance')->middleware('auth');;
+
 //AUTH
+
 //   login
 Route::get('/login', function () {
     return view ('Auth/connexion');
@@ -46,6 +48,7 @@ Route::get('/login2', function () {
     return redirect()->to(route('connexion'));
 })->name('login');
 Route::post('/login', [ConnexionController::class, 'login'])->name('login.submit');
+
 //  register
 Route::get('/register', function () {
     return view ('Auth/inscription');
@@ -66,11 +69,12 @@ Route::post('/verifyAdmin1-code', [VerificationController::class, 'verifyAdminBy
 Route::post('/verifyAdmin2-code', [VerificationController::class, 'verifyAdminBySms'
 ])->name('verifyAdmin.SMS');
 
-// portaille de connexion client (seul)
+// portaille de connexion client (basique)
 Route::get('/Auth/Connexion/verification', [VerificationController::class, 'show'
 ])->name('verification');
 Route::post('/verify-code', [VerificationController::class, 'verify'
 ])->name('verify.code');
+
 
 //page User Basique
 Route::get('/Home', function () {
@@ -84,6 +88,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/comptes/{id}/statut', [CompteBancaireController::class, 'updateStatut'])->name('comptes.updateStatut');
     Route::delete('/comptes/{id}', [CompteBancaireController::class, 'destroy'])->name('comptes.destroy');
 });
+
+
+
 //Page de l'admin
 // -Dashboard
 
