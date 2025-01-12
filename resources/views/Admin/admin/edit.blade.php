@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('AdminLayouts.app')
 
 @section('content')
 <!DOCTYPE html>
@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Transactions</title>
+    <title>Edit Admin</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -102,51 +102,36 @@
 </head>
 
 <body>
-    <div class="container">
-        <h1>Historique des Transactions</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Compte Débiteur</th>
-                    <th>Compte Créditeur</th>
-                    <th>Montant</th>
-                    <th>Type de Transaction</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($transactions as $transaction)
-                <tr>
-                    <td>{{ $transaction->CompteDeb }}</td>
-                    <td>{{ $transaction->CompteCre }}</td>
-                    <td>
-                        @if ($transaction->CompteDeb == Auth::user()->Email && $transaction->CompteCre == Auth::user()->Email)
-                        <span style="color: green">{{ '+' . $transaction->montant }}</span>
-                        @elseif ($transaction->CompteDeb == Auth::user()->Email)
-                        <span style="color: red">{{ '-' . $transaction->montant }}</span>
-                        @else
-                        <span style="color: green">{{ '+' . $transaction->montant }}</span>
-                        @endif
-                    </td>
-                    <td>
-                        @if ($transaction->CompteDeb == Auth::user()->Email)
-                        {{ 'Envoi' }}
-                        @else
-                        {{ 'Récois' }}
-                        @endif
-                    </td>
-                    <td>{{ $transaction->created_at }}</td>
-                </tr>
-                @endforeach
-                @if (count($transactions) == 0)
-                <tr>
-                    <td colspan="5" class="text-center">Aucun compte bancaire trouvé.</td>
-                </tr>
-                @endif
-            </tbody>
-        </table>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <h1>Modifier l'administrateur</h1>
+    <form action="{{ route('admin.update', $admin->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <div class="form-group">
+            <label for="Nom">Nom :</label>
+            <input type="text" name="Nom" id="Nom" value="{{ $admin->Nom }}" required>
+        </div>
+        <div class="form-group">
+            <label for="adresse">Adresse :</label>
+            <input type="number" name="adresse" id="adresse" value="{{ $admin->adresse }}" required>
+        </div>
+        <div class="form-group">
+            <label for="localisation">Localisation :</label>
+            <input type="number" name="localisation" id="localisation" value="{{ $admin->localisation }}" required>
+        </div>
+        <div class="form-group">
+            <label for="tel">Téléphone :</label>
+            <input type="text" name="tel" id="tel" value="{{ $admin->tel }}" required>
+        </div>
+        <div class="form-group">
+            <label for="Email">Email :</label>
+            <input type="email" name="Email" id="Email" value="{{ $admin->Email }}" required>
+        </div>
+        <div class="form-group">
+            <label for="Password">Mot de passe :</label>
+            <input type="password" name="Password" id="Password" required>
+        </div>
+        <button type="submit">Modifier</button>
+    </form>
 </body>
 
 </html>

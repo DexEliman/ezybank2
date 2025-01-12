@@ -20,7 +20,7 @@
     <h3>HQ</h3>
     <ul>
         <li>
-        <a href="#">Gestion des Admin</a>
+        <a href="{{ route('admin.index') }}">Gestion des Admin</a>
         </li>
     </ul>
 </div>

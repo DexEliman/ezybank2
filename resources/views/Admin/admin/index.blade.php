@@ -1,15 +1,13 @@
-@extends('layouts.app')
-
+@extends('AdminLayouts.app')
 @section('content')
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Transactions</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Admin Table</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Styles CSS personnalisés -->
@@ -99,56 +97,53 @@
             margin: 0 5px;
         }
     </style>
-</head>
 
+</head>
 <body>
-    <div class="container">
-        <h1>Historique des Transactions</h1>
-        <table class="table table-striped">
-            <thead>
+<h1>Liste des administrateurs</h1>
+<a href="{{ route('admin.create') }}" class="btn btn-primary mb-3">Ajouter un administrateur</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Adresse</th>
+                <th>Localisation</th>
+                <th>Tel</th>
+                <th>Email</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($admins as $admin)
                 <tr>
-                    <th>Compte Débiteur</th>
-                    <th>Compte Créditeur</th>
-                    <th>Montant</th>
-                    <th>Type de Transaction</th>
-                    <th>Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($transactions as $transaction)
-                <tr>
-                    <td>{{ $transaction->CompteDeb }}</td>
-                    <td>{{ $transaction->CompteCre }}</td>
+                    <td>{{ $admin->Nom }}</td>
+                    <td>{{ $admin->adresse }}</td>
+                    <td>{{ $admin->localisation }}</td>
+                    <td>{{ $admin->tel }}</td>
+                    <td>{{ $admin->Email }}</td>
+                    <td>{{ $admin->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ $admin->updated_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        @if ($transaction->CompteDeb == Auth::user()->Email && $transaction->CompteCre == Auth::user()->Email)
-                        <span style="color: green">{{ '+' . $transaction->montant }}</span>
-                        @elseif ($transaction->CompteDeb == Auth::user()->Email)
-                        <span style="color: red">{{ '-' . $transaction->montant }}</span>
-                        @else
-                        <span style="color: green">{{ '+' . $transaction->montant }}</span>
-                        @endif
+                        <a href="{{ route('admin.edit', $admin->id) }}">Modifier</a>
+                        <form action="{{ route('admin.destroy', $admin->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Supprimer</button>
+                        </form>
                     </td>
-                    <td>
-                        @if ($transaction->CompteDeb == Auth::user()->Email)
-                        {{ 'Envoi' }}
-                        @else
-                        {{ 'Récois' }}
-                        @endif
-                    </td>
-                    <td>{{ $transaction->created_at }}</td>
                 </tr>
-                @endforeach
-                @if (count($transactions) == 0)
+            @endforeach
+            
+                @if (count($admins) == 0)
                 <tr>
-                    <td colspan="5" class="text-center">Aucun compte bancaire trouvé.</td>
+                    <td colspan="8" class="text-center">Aucun compte bancaire trouvé.</td>
                 </tr>
                 @endif
-            </tbody>
-        </table>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        </tbody>
+    </table>
+    
 </body>
-
 </html>
-
 @endsection

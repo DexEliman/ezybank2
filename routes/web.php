@@ -68,9 +68,37 @@ Route::middleware('auth')->group(function () {
 });
 //Page de l'admin
 // -Dashboard
-Route::get('/Admin/Dashboard', function () {
+
+    Route::get('/Admin/Dashboard', function () {
     return view('/Admin/Dashboard'); 
-})->name('AdminHome');
+    })->name('AdminHome');
+Route::middleware('auth')->group(function () {
+    // -Dashboard
+    Route::get('/Admin/Dashboard', function () {
+        return view('/Admin/Dashboard'); 
+        })->name('AdminHome');
+
+
+    // Afficher 
+    Route::get('/admin', [AdminController::class, 'index'])
+         ->name('admin.index');
+
+    // Ajouter 
+    Route::get('/admin/create', [AdminController::class, 'create'])
+         ->name('admin.create');
+    Route::post('/admin', [AdminController::class, 'store'])
+         ->name('admin.store');
+
+    // Modifier 
+    Route::get('/admin/{id}/edit', [AdminController::class, 'edit'])
+         ->name('admin.edit');
+    Route::put('/admin/{id}', [AdminController::class, 'update'])
+         ->name('admin.update');
+
+    // Supprimer 
+    Route::delete('/admin/{id}', [AdminController::class, 'destroy'])
+         ->name('admin.destroy');
+});
 
 Route::resource('localisations', LocalisationController::class);
 // -Fonctions Admin
