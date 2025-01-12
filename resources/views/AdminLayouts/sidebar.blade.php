@@ -8,13 +8,13 @@
 
         </li>
         <li>
-            <a href="#">Gestion des Clients</a>
+            <a href="{{ route('betaAdmin') }}">Gestion des Clients</a>
         </li>
     </ul>
     <h3>HR</h3>
     <ul>
         <li>
-        <a href="#">Gestion de Staff</a>
+        <a href="{{ route('betaAdmin') }}">Gestion de Staff</a>
         </li>
     </ul>
     <h3>HQ</h3>

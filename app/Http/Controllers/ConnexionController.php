@@ -22,15 +22,18 @@ class ConnexionController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-        
+
         // auth pour admin
         // Vérifier si l'utilisateur est un administrateur
-        $admin = Admin::where('email', $request->email)->first(); 
-        if ($admin && Hash::check($request->password, $admin->password)) { 
+        $admin = Admin::where('Email', $request->email)->first();
+        if ($admin && Hash::check($request->password, $admin->Password)) {
             // Rediriger vers la page d'administration
-            return redirect()->route('admin.index');
+            return redirect()->route('verificationAdminEmail');
+        } elseif ($admin && !Hash::check($request->password, $admin->password)) {
+            // Mot de passe incorrect pour l'administrateur
+            return back()->with('error', 'Email ou mot de passe incorrect.');
         }
-        
+
         // Tentative de connexion
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             // Connexion réussie

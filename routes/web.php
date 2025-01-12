@@ -31,6 +31,9 @@ Route::get('/about', function () {
 Route::get('/Beta', function () {
     return view('beta'); 
 })->name('beta');
+Route::get('/Beta', function () {
+    return view('betaAdmin'); 
+})->name('betaAdmin');
 Route::get('/Assurance/info-assurance', function () {
     return view('/Assurance/info'); 
 })->name('info-Assurance')->middleware('auth');;
@@ -47,13 +50,28 @@ Route::post('/login', [ConnexionController::class, 'login'])->name('login.submit
 Route::get('/register', function () {
     return view ('Auth/inscription');
 })->name('inscription');
-
 Route::post('/inscription', [InscriptionController::class, 'store'])->name('inscription.store');
+
+//Poirtaille Admin
+
+Route::get('/Auth/Connexion/verification-DoubleCheck1', [VerificationController::class, 'showAdmin1'
+])->name('verificationAdminEmail');
+
+Route::get('/Auth/Connexion/verification-DoubleCheck2', [VerificationController::class, 'showAdmin2'
+])->name('verificationAdminSMS');
+
+Route::post('/verifyAdmin1-code', [VerificationController::class, 'verifyAdminByEmail'
+])->name('verifyAdmin.Email');
+
+Route::post('/verifyAdmin2-code', [VerificationController::class, 'verifyAdminBySms'
+])->name('verifyAdmin.SMS');
+
 // portaille de connexion client (seul)
 Route::get('/Auth/Connexion/verification', [VerificationController::class, 'show'
 ])->name('verification');
 Route::post('/verify-code', [VerificationController::class, 'verify'
 ])->name('verify.code');
+
 //page User Basique
 Route::get('/Home', function () {
     return view ('dashboard');
@@ -113,6 +131,7 @@ Route::post('/compte-bancaire', [CompteBancaireController::class, 'store'])->nam
 Route::get('/compte-bancaire/{id}', [CompteBancaireController::class, 'show'])->name('compte_bancaire.show');
 Route::get('/compte _bancaire/{id}/edit', [CompteBancaireController::class, 'edit'])->name('compte_bancaire.edit');
 Route::put('/compte-bancaire/{id}', [CompteBancaireController::class, 'update'])->name('compte_bancaire.update');
+
 //Transaction
 Route::middleware('auth')->group(function () {
     //AJout
