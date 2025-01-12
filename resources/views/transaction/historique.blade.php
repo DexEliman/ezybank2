@@ -107,8 +107,8 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Compte Débiteur</th>
-                    <th>Compte Créditeur</th>
+                    <th>Envoyeur</th>
+                    <th>Destinataire</th>
                     <th>Montant</th>
                     <th>Type de Transaction</th>
                     <th>Date</th>
