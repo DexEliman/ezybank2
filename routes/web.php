@@ -31,7 +31,7 @@ Route::get('/about', function () {
 Route::get('/Beta', function () {
     return view('beta'); 
 })->name('beta');
-Route::get('/Beta', function () {
+Route::get('/Beta-Admin', function () {
     return view('betaAdmin'); 
 })->name('betaAdmin');
 Route::get('/Assurance/info-assurance', function () {
